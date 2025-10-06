@@ -14,13 +14,13 @@ async function fetchWeatherData(location) {
 }
 
 function displayWeatherData(data) {
-    const weatherContainer = document.getElementById('weatherDisplay');
+    const weatherContainer = document.getElementById('weatherData');
     if (!weatherContainer) return;
 
     const current = data.current_condition[0];
     const temp = current.temp_C;
-    const desc = current.weatherDesc[0].value;
     const feelsLike = current.FeelsLikeC;
+    const desc = current.weatherDesc[0].value;
 
     weatherContainer.innerHTML = `
         <h2>Current Weather</h2>
@@ -31,5 +31,12 @@ function displayWeatherData(data) {
 }
 
 async function getWeather(location) {
-    const wea
+    const weatherContainer = document.getElementById('weatherData');
+    try {
+        const data = await fetchWeatherData(location);
+        displayWeatherData(data);
+    } catch (error) {
+        if (weatherContainer) {
+            weatherContainer.innerHTML = `<p style="color: red;">Failed to f
+
 
