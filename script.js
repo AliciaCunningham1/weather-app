@@ -1,22 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Function: Fetch Weather Data
+  console.log('DOM loaded');
+
   async function fetchWeatherData(location) {
     const url = `https://wttr.in/${location}?format=j1`;
-
     try {
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      const weatherData = await response.json();
-      return weatherData;
+      const data = await response.json();
+      return data;
     } catch (error) {
-      console.error('Error fetching weather data:', error);
+      console.error('Fetch error:', error);
       throw error;
     }
   }
 
-  // Function: Display Weather Data
   function displayWeatherData(data) {
     const weatherContainer = document.getElementById('weatherDisplay');
     if (!weatherContainer) {
@@ -24,20 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const current = data.current_condition[0];
-    const temp = current.temp_C;
-    const desc = current.weatherDesc[0].value;
-    const feelsLike = current.FeelsLikeC;
+    console.log('Displaying weather data:', data);
 
+    const current = data.current_condition[0];
     weatherContainer.innerHTML = `
       <h2>Current Weather</h2>
-      <p><strong>Temperature:</strong> ${temp}°C</p>
-      <p><strong>Feels Like:</strong> ${feelsLike}°C</p>
-      <p><strong>Description:</strong> ${desc}</p>
+      <p><strong>Temperature:</strong> ${current.temp_C}°C</p>
+      <p><strong>Feels Like:</strong> ${current.FeelsLikeC}°C</p>
+      <p><strong>Description:</strong> ${current.weatherDesc[0].value}</p>
     `;
   }
 
-  // Function: Get Weather
   async function getWeather(location) {
     const weatherContainer = document.getElementById('weatherDisplay');
     if (!weatherContainer) {
@@ -48,12 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const data = await fetchWeatherData(location);
       displayWeatherData(data);
-    } catch (error) {
+    } catch {
       weatherContainer.innerHTML = `<p style="color: red;">Failed to fetch weather data. Please try again.</p>`;
     }
   }
 
-  // Event Listener for Form Submission
   const weatherForm = document.getElementById('weatherForm');
   if (weatherForm) {
     weatherForm.addEventListener('submit', async (event) => {
@@ -67,9 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const location = locationInput.value.trim();
       if (!location) return;
 
+      console.log('Fetching weather for:', location);
       await getWeather(location);
     });
   } else {
     console.error('weatherForm element not found');
   }
 });
+
