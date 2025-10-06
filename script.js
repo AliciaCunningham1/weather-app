@@ -1,5 +1,7 @@
 async function fetchWeatherData(location) {
-    const url = `https://wttr.in/${location}?format=j1`;
+    const apiKey = "YOUR_API_KEY_HERE"; // Replace with your real WeatherAPI key
+    const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=no`;
+
     try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -17,13 +19,16 @@ function displayWeatherData(data) {
     const weatherContainer = document.getElementById('weatherData');
     if (!weatherContainer) return;
 
-    const current = data.current_condition[0];
-    const temp = current.temp_C;
-    const feelsLike = current.FeelsLikeC;
-    const desc = current.weatherDesc[0].value;
+    const temp = data.current.temp_c;
+    const feelsLike = data.current.feelslike_c;
+    const desc = data.current.condition.text;
+    const icon = data.current.condition.icon;
+    const locationName = `${data.location.name}, ${data.location.region}`;
 
     weatherContainer.innerHTML = `
         <h2>Current Weather</h2>
+        <p><strong>Location:</strong> ${locationName}</p>
+        <img src="https:${icon}" alt="${desc}" style="width: 60px; height: 60px;">
         <p><strong>Temperature:</strong> ${temp}°C</p>
         <p><strong>Feels Like:</strong> ${feelsLike}°C</p>
         <p><strong>Description:</strong> ${desc}</p>
@@ -43,15 +48,4 @@ async function getWeather(location) {
 }
 
 const searchBtn = document.getElementById('searchBtn');
-const locationInput = document.getElementById('locationInput');
-
-if (searchBtn && locationInput) {
-    searchBtn.addEventListener('click', () => {
-        const location = locationInput.value.trim();
-        if (location) {
-            getWeather(location);
-        } else {
-            alert('Please enter a location.');
-        }
-    });
-}
+const locationInput = document.getElementById('lo
