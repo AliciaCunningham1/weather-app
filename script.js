@@ -1,4 +1,3 @@
-// Fetch weather data from API
 async function fetchWeatherData(location) {
     const url = `https://wttr.in/${location}?format=j1`;
 
@@ -15,7 +14,6 @@ async function fetchWeatherData(location) {
     } catch (error) {
         console.error('Error fetching weather data:', error);
 
-        // Fallback mock data so it still shows something on GitHub Pages
         return {
             current_condition: [
                 {
@@ -35,7 +33,6 @@ async function fetchWeatherData(location) {
     }
 }
 
-// Display weather data and forecast
 function displayWeatherData(data) {
     const container = document.getElementById('weatherData');
     if (!container) return;
@@ -72,7 +69,6 @@ function displayWeatherData(data) {
     container.innerHTML = html;
 }
 
-// Get weather and handle errors
 async function getWeather(location) {
     const container = document.getElementById('weatherData');
     try {
@@ -85,7 +81,6 @@ async function getWeather(location) {
     }
 }
 
-// Form submit event listener
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('weatherForm');
     const input = document.getElementById('locationInput');
