@@ -37,6 +37,21 @@ async function getWeather(location) {
         displayWeatherData(data);
     } catch (error) {
         if (weatherContainer) {
-            weatherContainer.innerHTML = `<p style="color: red;">Failed to f
+            weatherContainer.innerHTML = `<p style="color: red;">Failed to fetch weather data. Please try again.</p>`;
+        }
+    }
+}
 
+const searchBtn = document.getElementById('searchBtn');
+const locationInput = document.getElementById('locationInput');
 
+if (searchBtn && locationInput) {
+    searchBtn.addEventListener('click', () => {
+        const location = locationInput.value.trim();
+        if (location) {
+            getWeather(location);
+        } else {
+            alert('Please enter a location.');
+        }
+    });
+}
